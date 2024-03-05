@@ -9,13 +9,14 @@ planning phase to building phase as well as areas that need improvement.
 At the first when I gone through data and business questions it appear to me to obtain
 source we can go with simple extract where have python code to extract csv data directly
 with the following urls:
-https://davidmegginson.github.io/ourairports-data/airports.csv
-https://davidmegginson.github.io/ourairports-data/airport-frequencies.csv
-https://davidmegginson.github.io/ourairports-data/airport-comments.csv
-https://davidmegginson.github.io/ourairports-data/runways.csv
-https://davidmegginson.github.io/ourairports-data/navaids.csv
-https://davidmegginson.github.io/ourairports-data/countries.csv
-https://davidmegginson.github.io/ourairports-data/regions.csv
+- https://davidmegginson.github.io/ourairports-data/airports.csv
+- https://davidmegginson.github.io/ourairports-data/airport-frequencies.csv
+- https://davidmegginson.github.io/ourairports-data/airport-comments.csv
+- https://davidmegginson.github.io/ourairports-data/runways.csv
+- https://davidmegginson.github.io/ourairports-data/navaids.csv
+- https://davidmegginson.github.io/ourairports-data/countries.csv
+- https://davidmegginson.github.io/ourairports-data/regions.csv
+
 And apply upsert into the database with the assumption ‘id’ being unique so on id conflict we
 will apply upsert else ignore as well as insert if data doesn’t exist. Thereafter once data is
 ready we will setup DBT to our postgres database and start applying transformation as per
@@ -27,6 +28,7 @@ business questions listed below:
 5. What is the min, max and average elevation of the cities per country?
 6. Which are the highest and lowest elevated cities in the world with populations > 100000?
 7. Which are the highest and lowest elevated airports, airfields and heliports on the planet?
+
 Then we will set up a crontab to help us schedule our jobs. The crontab will schedule a time
 say daily or hourly to look up when source data (ourairports) was last updated via github's
 last modified date and trigger csv fetch then upsert to database again.
@@ -89,6 +91,7 @@ provided via schema registry dynamically.
 but this will require proper planning and feedback.
 10. Producer and consumer could do some more optimisation as well as fine tuning on
 batch processing.
+
 Business Requirements:
 - How many airports, airfields and heliports exist in each country and continent?
 - What is the average elevation of the airports, airfields and heliports in each country?
