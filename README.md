@@ -40,6 +40,7 @@ KETL, talend, apache kafka. etc) and a database backend (ie: mysql, Oracle,
 postgreSQL. etc)
 Where an etl tool is required. So I decided to go with apache kafka as it's quick to spin up
 with docker. Thereafter my solution changed, see diagram below:
+![alt text](https://github.com/KilluaTang/fnb-pipeline/blob/main/fnb-pipeline.jpg?raw-true)
 
 As per diagram above we will use crontab to schedule a job that will look up last modified
 data from github and trigger extraction of csv data and produce data to kafka with its schema
