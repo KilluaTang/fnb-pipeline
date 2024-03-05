@@ -1,0 +1,57 @@
+---
+version: 2
+
+models:
+  - name: country_airport_stats
+    description: Country airport stats
+    columns:
+      - name: country_name
+        description: Name of the country.
+
+      - name: continent
+        description: Continent where country in.
+      
+      - name: total_airports
+        description: Total number of airports in the country
+
+      - name: number_of_cities
+        description: Number of cities within the country. Note. This file is based on sample data in https://ourairports.com/ where its obtained via airport's municipality.
+
+      - name: min_city_elevation
+        description: Minium city elevation of the airport city in the country
+
+      - name: max_city_elevation
+        description: Maxium city elevation of the airport city in the country
+
+      - name: avg_city_elevation
+        description: Average city elevation of the airport city in the country
+
+      - name: airfields
+        description: Totoal number of airfields in the country
+
+      - name: heliports
+        description: Number of heliports in the country
+
+      - name: avg_airfield_elevation
+        description: Average airfields elevation in the country
+
+      - name: avg_heliport_elevation
+        description: Average heliports elevation in the country
+  
+  - name: airport_height_ranking
+    description: Base on the ranking to determin highest and lowest elevation of the airfield in each country
+    columns:
+      - name: type
+        description: Type of the airfield
+
+      - name: name
+        description: Name of the airfield
+      
+      - name: elevation_ft
+        description: min or max of the elevation_ft of the airfield
+
+      - name: country_name
+        description: Country where the airfield in.
+
+      - name: iso_region
+        description: Region code for the airfield.

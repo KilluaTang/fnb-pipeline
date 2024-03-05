@@ -1,0 +1,15 @@
+numpy
+pandas
+requests
+
+psycopg2-binary
+confluent_kafka
+avro
+avro-python3
+
+dbt-core
+dbt-postgres
+
+beautifulsoup4
+
+pgeocode

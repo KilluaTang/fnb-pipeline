@@ -1,0 +1,81 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - ~/apps/postgres:/var/lib/postgresql/data
+      - ./initdb-scripts:/docker-entrypoint-initdb.d  # Mount the initdb-scripts directory
+    environment:
+      - POSTGRES_PASSWORD=S3cret
+      - POSTGRES_USER=fnb
+      - POSTGRES_DB=fnb_demo
+    networks:
+      - demonetwork
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    networks:
+      - demonetwork
+
+  kafka-broker-1:
+    image: confluentinc/cp-kafka:latest
+    hostname: kafka-broker-1
+    ports:
+      - "19092:19092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-broker-1:9092,PLAINTEXT_INTERNAL://localhost:19092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - demonetwork
+
+  create_kafka_topics:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - kafka-broker-1
+    entrypoint: ["bash", "-c", "echo 'Creating Kafka topics...'; kafka-topics --create --bootstrap-server kafka-broker-1:9092 --replication-factor 1 --partitions 1 --topic airports --if-not-exists && kafka-topics --create --bootstrap-server kafka-broker-1:9092 --replication-factor 1 --partitions 1 --topic airport-frequencies --if-not-exists && kafka-topics --create --bootstrap-server kafka-broker-1:9092 --replication-factor 1 --partitions 1 --topic runways --if-not-exists && kafka-topics --create --bootstrap-server kafka-broker-1:9092 --replication-factor 1 --partitions 1 --topic navaids --if-not-exists && kafka-topics --create --bootstrap-server kafka-broker-1:9092 --replication-factor 1 --partitions 1 --topic regions --if-not-exists && kafka-topics --create --bootstrap-server kafka-broker-1:9092 --replication-factor 1 --partitions 1 --topic countries --if-not-exists"]
+    networks:
+      - demonetwork
+  
+  demo_script-1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: container1
+    depends_on:
+      - postgres
+    volumes:
+      - .:/scripts
+    networks:
+      - demonetwork
+
+  demo_script-2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: container2
+    depends_on:
+      - postgres
+      - kafka-broker-1
+      - create_kafka_topics
+    volumes:
+      - .:/scripts
+    networks:
+      - demonetwork
+
+networks:
+  demonetwork:
+    driver: bridge

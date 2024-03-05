@@ -1,0 +1,32 @@
+---
+version: 2
+
+sources:
+  - name: ourairports
+    description: airports data listed on https://ourairports.com/
+    schema: raw
+
+    tables:
+      - name: airports
+        description: containing information on all airports on https://ourairports.com/
+        identifier: airports
+
+      - name: airport_frequiencies
+        description: listing communication frequencies for the airports
+        identifier: airport_frequiencies
+      
+      - name: countries
+        description: A list of the world's countries. You need this data to interpret the country codes in the airports and navaids data.
+        identifier: countries
+
+      - name: regions
+        description: A list of all countries' top-level administrative subdivisions (provinces, governorates, states, etc.). You need this data to interpret the region codes in the airport data.
+        identifier: regions
+
+      - name: runways
+        description: listing runways for the airports
+        identifier: runways
+
+      - name: navaids
+        description: listing worldwide radio navigation aids
+        identifier: navaids
