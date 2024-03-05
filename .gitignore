@@ -1,4 +1,5 @@
 __pycache__/
+dbt_packages/
 target/
 logs/
 *.DS_Store
